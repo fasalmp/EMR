@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: #000000; /* Twitter's background color */
+            color: #ffffff; /* Twitter's text color */
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%; /* Adjusted width for mobile view */
+            max-width: 500px; /* Maximum width for mobile */
+            background-color: #000000; /* Twitter's table background color */
+            border: 1px solid #e1e8ed; /* Twitter's table border color */
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #e1e8ed; /* Twitter's table border color */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #000000; /* Twitter's table header background color */
+            color: #ffffff; /* Twitter's table header text color */
+            font-weight: 700;
+        }
+
+        /* Style for smaller screens */
+        @media screen and (max-width: 600px) {
+            table {
+                width: 100%;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table id="resultTable">
+        <!-- Student Name will be inserted here -->
+    </table>
+
+    <script>
+        // Parse query parameters to get selected class and name
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const className = urlParams.get('class');
+        const name = decodeURIComponent(urlParams.get('name'));
+
+        // Define student data for both 8th and 9th grades
+        var eighthStudentsData = [
+            ["نشوة", 21, 25, 29, 27, 44, 146, 5, 58.4],
+            ["فاطمة سفنة", 39, 29, 35, 29, 45, 177, 1, 70.8],
+            ["سعدية", 22, 27, 36, 32, 42, 159, 3, 63.6],
+            ["فاطمة رنشة", 32, 26, 42, 32, 44, 176, 2, 70.4],
+            ["عائشة لية", 27, 26, 26, 28, 42, 149, 4, 59.6]
+        ];
+
+        var ninthStudentsData = [
+            ["محمد شفن", 37, 27, 17, 19, 35, 135, 8, 54],
+            ["محمد شميم", 29, 26, 21, 25, 37, 138, 7, 55.2],
+            ["أسنة", 44, 39, 22, 32, 47, 184, 4, 73.6],
+            ["منهة فاطمة", 43, 42, 19, 35, 26, 165, 6, 66],
+            ["فاطمة حنة", 44, 42, 19, 33, 47, 185, 3, 74],
+            ["عائشة رزة", 44, 42, 23, 42, 45, 196, 1, 78.4],
+            ["عادلة فرسانة", 44, 41, 24, 36, 45, 190, 2, 76],
+            ["فاطمة ندة بيوي", 44, 40, 20, 29, 47, 180, 5, 72]
+        ];
+
+        // Determine which students data to display based on the selected class
+        var studentData;
+        if (className === "8") {
+            studentData = eighthStudentsData;
+        } else if (className === "9") {
+            studentData = ninthStudentsData;
+        }
+
+        // Find the selected student's data
+        var selectedStudentData;
+        studentData.forEach(function(student) {
+            if (student[0] === name) {
+                selectedStudentData = student;
+            }
+        });
+
+        // Function to create a row in the table for each subject and its marks
+        function createTableRow(data) {
+            var resultTable = document.getElementById('resultTable');
+            // Add student's name as the first line
+            var trName = document.createElement('tr');
+            var tdName = document.createElement('td');
+            tdName.textContent = "Student Name: " + data[0];
+            trName.appendChild(tdName);
+            resultTable.appendChild(trName);
+
+            // Add heading for subjects and marks on the next line
+            var trHeading = document.createElement('tr');
+            var thSubject = document.createElement('th');
+            var thMarks = document.createElement('th');
+            thSubject.textContent = "Subject";
+            thMarks.textContent = "Marks";
+            trHeading.appendChild(thSubject);
+            trHeading.appendChild(thMarks);
+            resultTable.appendChild(trHeading);
+
+            // Array of subject names and additional data
+            var subjects = ["لسان القران", "فقة", "دروس الاحسان", "التاريخ", "تطبيق", "TOTAL", "RANK", "%"];
+            var additionalData = [data.slice(-3)[0], data.slice(-2)[0], data.slice(-1)[0]];
+
+            // Loop through each subject and its marks and create rows accordingly
+            for (let i = 0; i < subjects.length; i++) {
+                var tr = document.createElement('tr');
+                var td1 = document.createElement('td');
+                var td2 = document.createElement('td');
+                td1.textContent = subjects[i]; // Subject name or additional data label
+                td2.textContent = (i < subjects.length - 3) ? data[i + 1] : additionalData[i - (subjects.length - 3)]; // Marks or additional data value
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                resultTable.appendChild(tr);
+            }
+        }
+
+        // Display the selected student's details
+        createTableRow(selectedStudentData);
+    </script>
+</body>
+</html>

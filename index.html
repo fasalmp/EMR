@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f8fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #000000;
+        }
+
+        select, button {
+            margin-bottom: 16px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ffffff;
+            border-radius: 9999px;
+            background-color: #000000;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        select {
+            appearance: none;
+        }
+
+        button {
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0d8cf0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <select id="class">
+                <option value="">Select Class</option>
+                <option value="8">8th</option>
+                <option value="9">9th</option>
+            </select>
+            <select id="name">
+                <option value="">Select Name</option>
+                <!-- Populate names based on class selection -->
+            </select>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Define names for 8th and 9th students
+        var namesByClass = {
+            "8": ["نشوة", "فاطمة سفنة", "سعدية", "فاطمة رنشة", "عائشة لية", "احمد رفاعي", "رازل محمد", "محمد شهل", "الأمين"],
+            "9": ["محمد شفن", "محمد شميم", "أسنة", "منهة فاطمة", "فاطمة حنة", "عائشة رزة", "عادلة فرسانة", "فاطمة ندة بيوي"]
+        };
+
+        // Function to populate names based on selected class
+        function populateNames() {
+            var selectedClass = document.getElementById('class').value;
+            var nameSelect = document.getElementById('name');
+            nameSelect.innerHTML = '<option value="">Select Name</option>';
+            if (selectedClass && namesByClass[selectedClass]) {
+                namesByClass[selectedClass].forEach(function(name) {
+                    var option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    nameSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Event listener for class selection change
+        document.getElementById('class').addEventListener('change', populateNames);
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var className = document.getElementById('class').value;
+            var name = document.getElementById('name').value;
+            if (className && name) {
+                // Redirect to the result page after successful login
+                window.location.href = 'result.html?class=' + className + '&name=' + encodeURIComponent(name);
+            } else {
+                alert('Please select both class and name.');
+            }
+        });
+    </script>
+</body>
+</html>
